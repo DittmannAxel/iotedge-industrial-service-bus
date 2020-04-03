@@ -1,0 +1,117 @@
+{
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": ""
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "type": "docker",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.0.9",
+              "createOptions": "{}"
+            }
+          },
+          "edgeHub": {
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.0.9"
+            }
+          }
+        },
+        "modules": {
+          "isbreader": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "vslepakov/isbreader:0.0.1-amd64",
+              "createOptions": "{\"Env\":[\"TOPIC=opc-data\"]}"
+            }
+          },
+          "rabbitmq": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "vslepakov/rabbitmq-federation:1",
+              "createOptions": "{\"Hostname\":\"my-rabbit\",\"HostConfig\":{\"PortBindings\":{\"15672/tcp\":[{\"HostPort\":\"15672\"}]}}}"
+            }
+          },
+          "rabbitmq-manager": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "vslepakov/rabbitmqmanager:0.0.3-amd64",
+              "createOptions": "{}"
+            }
+          },
+          "redis": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "redis",
+              "createOptions": "{}"
+            }
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "routes": {
+          "ISBReaderToIoTHub": "FROM /messages/modules/isbreader/outputs/* INTO $upstream"
+        },
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    },
+    "rabbitmq-manager": {
+      "properties.desired": {
+        "rabbitMQConfig": {
+          "hostname": "rabbitmq",
+          "port": 15672,
+          "username": "guest",
+          "password": "guest",
+          "federationConfig": {
+            "upstreams": {
+              "opc-data-edge1": {
+                "uri": "amqp://guest:guest@isb-demo-iotedge-1.internal.cloudapp.net:25672",
+                "expires": 3600000
+              },
+              "opc-data-edge2": {
+                "uri": "amqp://guest:guest@isb-demo-iotedge-2.internal.cloudapp.net:25672",
+                "expires": 3600000
+              }
+            },
+            "policies": {
+              "opc-data": {
+                "pattern": "^opc-data$",
+                "definition": {
+                  "federation-upstream-set": "all"
+                },
+                "apply-to": "exchanges"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

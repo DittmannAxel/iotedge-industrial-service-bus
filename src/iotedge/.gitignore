@@ -1,0 +1,4 @@
+config/*
+!config/deployment.isbreader.amd64.json
+!config/deployment.isbwriter.amd64.json
+.env

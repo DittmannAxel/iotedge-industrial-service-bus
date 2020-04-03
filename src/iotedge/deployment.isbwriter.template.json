@@ -1,0 +1,121 @@
+{
+  "$schema-template": "2.0.0",
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": ""
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "type": "docker",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.0.9",
+              "createOptions": {}
+            }
+          },
+          "edgeHub": {
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.0.9"
+            }
+          }
+        },
+        "modules": {
+          "rabbitmq": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "rabbitmq:3-management",
+              "createOptions": {
+                "Hostname": "my-rabbit",
+                "HostConfig": {
+                  "PortBindings": {
+                    "15672/tcp": [
+                      {
+                        "HostPort": "15672"
+                      }
+                    ],
+                    "5672/tcp": [
+                      {
+                        "HostPort": "25672"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "redis": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "redis",
+              "createOptions": {}
+            }
+          },
+          "opc-publisher": {
+            "settings": {
+              "image": "mcr.microsoft.com/iotedge/opc-publisher:2.3",
+              "createOptions": {
+                "Hostname": "opc-publisher",
+                "Cmd": [
+                  "--pf=./pn.json",
+                  "--aa",
+                  "--di=60",
+                  "--si=10",
+                  "--ih=Mqtt_Tcp_Only"
+                ],
+                "HostConfig": {
+                  "Binds": [
+                    "/home/azureuser:/appdata"
+                  ]
+                }
+              }
+            },
+            "type": "docker",
+            "version": "1.0",
+            "status": "running",
+            "restartPolicy": "always"
+          },
+          "isbwriter": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.ISBWriter}",
+              "createOptions": {
+                "Env": [
+                  "TOPIC=opc-data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "routes": {
+          "OpcPublisherToISBWriter": "FROM /messages/modules/opc-publisher/* INTO BrokeredEndpoint(\"/modules/isbwriter/inputs/input1\")"
+        },
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    }
+  }
+}

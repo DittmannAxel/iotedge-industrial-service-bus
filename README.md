@@ -1,10 +1,10 @@
 # Framework for an Industrial Service Bus with IoT Edge
 
-Welcome to our design of an independent framework for an industrial service bus that is able to run on the factory floor.  
-At the initial design workshop, we had more than 30+ participants from various companies, including #Intel, #HPE, #senseering and many others, which contributed to designs, code, use cases and prerequisites.
+Welcome to our design of an independent framework for an _Industrial Service Bus_ that is able to run on the factory floor.  
+At the initial design workshop, we had more than 30+ participants from various companies, including #Intel, #HPE, #senseering and many others, which contributed to designs, code, use cases and prerequisite definitions.
 
-> The repository represents an initial framework state.
-> As the framework evolves, there will be continuous improvements and contributions to this repository including updates to documentation and features.
+> This GitHub repository represents an initial framework starter with an community approach.
+> As the framework evolves, continuous improvements and contributions will be added to this repository including updates to documentation and features. Please feel free to participate and contribute!
 
 ![isb_iotedge](docs/img/isb_overall_arch.jpg)
 

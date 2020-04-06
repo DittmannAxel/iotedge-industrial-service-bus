@@ -1,69 +1,84 @@
 # Deploy the Demo
 
-## Which resources get deployed?
+## Which Resources Get Deployed?
 
-Following resources will be created:
+The following resources will be created:
 
-* 5 Ubuntu VMs (3 x IoT Edge, 2 x PLC Simulation) of size Standard_B1ms
-* 1 x VNET with two Subnets
-* 1 x Azure Bastion with public IP
-* 1 x IoT Hub S1  
+- 5 Ubuntu VMs (3 x IoT Edge, 2 x PLC Simulation) of size _Standard_B1ms_
+- 1 x VNET with two Subnets
+- 1 x Azure Bastion with public IP
+- 1 x IoT Hub of size _S1_
 
 [Approximate Cost Estimate](https://azure.com/e/fb7a1c2c06e44177831868871bedd335)
 
 ## Prerequisites
 
-Deployment is done by a **shell script** which uses az cli.
-Make sure you either  
-* [install az cli on your UNIX based OS](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
-* or you use [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview). **Azure Cloud shell will timeout after 20 minutes of inactivity**.  
-* or you use [this az cli docker image](https://docs.microsoft.com/en-us/cli/azure/run-azure-cli-docker?view=azure-cli-latest) (also on Windows) for deployment.
+Deployment is done by a __shell script__ which uses the Azure CLI.  
+Make sure you either
 
-If you decide to go with the docker image on Windows you first need to [activate _FILE SHARING_](https://docs.docker.com/docker-for-windows/#docker-settings-dialog)  
-Then just run your container like this:  
-```docker run -v C:\<path-to-the-src-folfer-in-this-github-repo>:/isb -it mcr.microsoft.com/azure-cli```  
-you will have all files available under _/isb_ inside the container.
+- [install Azure CLI on your UNIX based OS](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
+- or you use [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview). __Azure Cloud Shell will timeout after 20 minutes of inactivity__.  
+- or you use [this Azure CLI Docker image](https://docs.microsoft.com/en-us/cli/azure/run-azure-cli-docker?view=azure-cli-latest) (also on Windows) for deployment.
 
-## Run deployment
+If you decide to go with the Docker image on Windows you first need to [activate _FILE SHARING_](https://docs.docker.com/docker-for-windows/#docker-settings-dialog).  
+Then just run your container like this:
 
-Clone this repo, navigate to the _deployment_ directory and execute ```./deploy.sh [your subscriptionId] [region]``` to start the deployment. The subscription ID is optional. If you do not provide it, default subscription will be used. The region is also optional. If not specified _westus_ is used (examples: eastus, westeurope).  
-   
+```none
+docker run -v C:\<path-to-the-src-folder-in-this-github-repo>:/isb -it mcr.microsoft.com/azure-cli
+```
+
+You will have all files available under `/isb` inside the container.
+
+## Run Deployment
+
+Clone this repo, navigate to the _deployment_ directory and execute `./deploy.sh [your_subscriptionId] [region]` to start the deployment.
+
+> The subscription ID is optional.
+> If you do not provide it, the default subscription will be used.  
+> The region is also optional.
+> If not specified _West US_ (`westus`) is used (other examples: `eastus`, `westeurope`).
+
 It takes around 25 minutes to deploy and initialize everything.
-At the end of a successfull deployment the script outputs **SSH username (currently _azureuser_) and the SSH private key** that you can use to connect to your VMs via SSH. None of the VMs is exposed via a public IP address which is why you will need to use Azure Bastion (created as part of the deployment) to access them [as described here](https://docs.microsoft.com/bs-cyrl-ba/azure/bastion/bastion-connect-vm-ssh#privatekey).  
-After a successfull deployment you will have the setup up and running shown here (blue arrows show data flows): 
-   
-![architectural dagramm](img/deployment_diagram.PNG)
+At the end of a successful deployment the script outputs __SSH username (currently _azureuser_) and the SSH private key__ that you can use to connect to your VMs via SSH.
+None of the VMs are exposed via a public IP address which is why you will need to use Azure Bastion (created as part of the deployment) to access them [as described here](https://docs.microsoft.com/bs-cyrl-ba/azure/bastion/bastion-connect-vm-ssh#privatekey).  
+After a successful deployment you will have the setup up and running shown here (blue arrows show data flows):
+
+![Architectural Diagram of the Deployment](img/deployment.png)
 
 ### Important
 
-* Due to the lack of time the deployment script **does not** implement robust error handling. In case you run into issues: fix those, remove the complete resource group and redeploy
-* VM hotnames are important since they are used as conventions in some connection strings like in e.g. _isb-demo-iotedge-1-pn.json_ or the _cloud-init-iotedge.yml_. You would need to change those as well.
-* After a successful deployment an .env file is written to disk which contains some information used by the _restart-dapr.sh_ script. This is just for your convenience so you don't need to look up this information in the Azure Portal.
-* _restart-dapr.sh_ is used to restart IoT Edge modules containing Dapr runtime. This is needed to account for cases where e.g. RabbitMQ or Redis are started **after** the Dapr runtime. Dapr runtime currently does not implement a retry mechanism to connect to a message broker in a pub/sub scenario. This is planned for one of the future releases. Also it is currently not possible to specify module start order in IoT Edge. [This functionality is planned for the upcoming 1.0.10 RC release](https://github.com/Azure/iotedge/blob/master/doc/ModuleStartupOrder.md).
+- Due to the lack of time the deployment script __does not__ implement robust error handling. In case you run into issues: fix those, remove the complete resource group and redeploy
+- VM hotnames are important since they are used as conventions in some connection strings like in e.g. `isb-demo-iotedge-1-pn.json` or the `cloud-init-iotedge.yml`. You would need to change those as well.
+- After a successful deployment an `.env`-file is written to disk which contains some information used by the `restart-dapr.sh` script. This is just for your convenience so you don't need to look up this information in the Azure Portal.
+- `restart-dapr.sh` is used to restart IoT Edge modules containing _Dapr_ runtime. This is needed to account for cases where e.g. _RabbitMQ_ or _Redis_ are started __after__ the _Dapr_ runtime. _Dapr_ runtime currently does not implement a retry mechanism to connect to a message broker in a pub/sub scenario. This is planned for one of the future releases. Also, it is currently not possible to specify a module start order in IoT Edge. [This functionality is planned for the upcoming 1.0.10 RC release](https://github.com/Azure/iotedge/blob/master/doc/ModuleStartupOrder.md).
 
 ## Validating Successful Deployment
 
 Download and install [Azure IoT Explorer](https://github.com/Azure/azure-iot-explorer) from [here](https://github.com/Azure/azure-iot-explorer/releases).  
-Retrieve IoT Hub owner connection string as shown here:  
-  
-![IoT Hub Conenction String](img/IoTHubConnection.png)  
-Use this connection string to connect using Azure IoT Explorer.  
-In Azure IoT Explorer select device _isb-demo-iotedge-3_ as shown here:  
-  
-![isb-demo-iotedge-3](img/seelct_device_in_explorer.PNG)  
-then go to _Telemetry -> Start_. After some time you should see data in OPC UA Pub Sub JSON format:  
-  
-![data flow in explorer](img/data_flow_in_explorer.PNG)  
-You should see two different OPC UA NodeIds:  
-* ```\"NodeId\":\"nsu=http://microsoft.com/Opc/OpcPlc/;s=SpikeData\"``` from _isb-demo-plc-1_
-* ```\"NodeId\":\"nsu=http://microsoft.com/Opc/OpcPlc/;s=DipData\"``` from _isb-demo-plc-2_  
+Retrieve the IoT Hub owner connection string as shown here:
 
-Those PLCs might be located in completely different factories in different locations.  
-Still, with ISB it is easy to consume this data withouth having any knowledge where it exactly comes from.
+![IoT Hub Connection String Screenshot](img/iothub_connection.png)
+
+Use this connection string to connect using Azure IoT Explorer.  
+In Azure IoT Explorer select device _isb-demo-iotedge-3_ as shown here:
+
+![Azure IoT Explorer isb-demo-iotedge-3 Device Screenshot](img/select_device_in_explorer.png)
+
+Then go to _Telemetry_ -> _Start_. After some time you should see data in OPC UA Pub Sub JSON format:
+
+![Azure IoT Explorer Data Flow via Device Telemetry Screenshot](img/data_flow_in_explorer.png)
+
+You should see two different OPC UA NodeIds:
+
+- `\"NodeId\":\"nsu=http://microsoft.com/Opc/OpcPlc/;s=SpikeData\"` from _isb-demo-plc-1_
+- `\"NodeId\":\"nsu=http://microsoft.com/Opc/OpcPlc/;s=DipData\"` from _isb-demo-plc-2_
+
+Those PLCs might in reality be located in completely different factories in different locations.  
+Still, with ISB it is easy to consume this data without having any knowledge where it exactly comes from.
 
 ## Troubleshooting
 
-* You can connect to each VM using Azure Bastion using provided credentials.
-  * You can read IoT Edge logs using _iotedge logs <module name>_
-  * You can request logs upload to a storage account using this [direct method on edgeAgent](https://github.com/Azure/iotedge/blob/master/doc/built-in-logs-pull.md)
-* After a successful deployment in case you don't see the data flowing try to re-run _restart-dapr.sh_
+- You can connect to each VM using Azure Bastion using the provided credentials
+  - You can read IoT Edge logs using `iotedge logs <module_name>`
+  - You can request logs upload to a storage account using this [direct method on edgeAgent](https://github.com/Azure/iotedge/blob/master/doc/built-in-logs-pull.md)
+- In case you don't see the data flowing after a successful deployment try to re-run `restart-dapr.sh`

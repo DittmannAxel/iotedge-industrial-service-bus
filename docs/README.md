@@ -1,9 +1,6 @@
-Readme for the docs:
+# Industrial Service Bus Documentation
 
-*.md files for:
-- [Architecture](ARCHITECTURE.md)
-- [Use Cases](USECASES.md)
-- [Requirements](REQUIREMENTS.md)
-- Short Description how to use Dapr.io on IOT Edge with this [Link](https://medium.com/@vslepakov/dapr-on-azure-iot-edge-31c7020c8cda)
-  
-  
+- [Use Cases](docs/USECASES.md)
+- [Requirements](docs/REQUIREMENTS.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- Resource: [How to use Dapr on IoT Edge](https://medium.com/@vslepakov/dapr-on-azure-iot-edge-31c7020c8cda)

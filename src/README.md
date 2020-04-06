@@ -27,7 +27,7 @@ The _Reader_ on the other hand is responsible for __reading__ data from the ISB,
 
 The following diagram shows the interaction between different IoT Edge modules and Dapr. In the demo setup `ISBReader` and `ISBWriter` modules are deployed to different IoT Edge nodes for the sake of demonstration (see [deployment diagram](deployment/img/deployment_diagram.PNG)).
 
-![isb_iotedge](img/isb_iotedge1.png)
+![ISB Implementation with IoT Edge](img/isb_iotedge1.png)
 
 Dapr currently supports two modes of operation:
 

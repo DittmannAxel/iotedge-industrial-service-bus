@@ -6,10 +6,10 @@ At the initial design workshop, we had more than 30+ participants from various c
 > This GitHub repository represents an initial framework starter with an community approach.
 > As the framework evolves, continuous improvements and contributions will be added to this repository including updates to documentation and features. Please feel free to participate and contribute!
 
-![isb_iotedge](docs/img/isb_overall_arch.jpg)
+![Architecture Overview of an ISB with IoT Edge](docs/img/isb_overall_arch.jpg)
 
 The diagram shows the overall architecture and parts of the framework functionality.
-Is is explained in detail in the [documentation ("docs")](docs/README.md).  
+It is explained in detail in the [documentation ("docs")](docs/README.md).  
 The code for an initial fast-start implementation can be found in the [source ("src")](src/README.md) section.
 
 ## Content

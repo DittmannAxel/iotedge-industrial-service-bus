@@ -15,18 +15,18 @@ deployIoTEdge() {
 
   # Deploy edge modules
   az iot edge deployment create -d $1 -n ${ISB_IOT_HUB} \
-  --content $2 --target-condition "deviceId='$1'" --priority 10
+    --content $2 --target-condition "deviceId='$1'" --priority 10
 
   local connectionString=$(az iot hub device-identity show-connection-string --device-id $1 --hub-name ${ISB_IOT_HUB} -o tsv)
   az vm run-command invoke -g ${RG_NAME} -n $1 \
-  --command-id RunShellScript --script "/etc/iotedge/configedge.sh '${connectionString}'"
+    --command-id RunShellScript --script "/etc/iotedge/configedge.sh '${connectionString}'"
 }
 
 deployPlc() {
-  # Create a PLC virtual machine.
+  # Create a PLC virtual machine
   az vm create --resource-group ${RG_NAME} --name $1 --image UbuntuLTS \
-  --vnet-name ${VNET_NAME} --subnet ${SUBNET_NAME} --nsg ${NSG_NAME} --public-ip-address "" \
-  --generate-ssh-keys --size ${VM_SIZE} --custom-data ${CLOUD_INIT_PLC} --admin-username ${ADMIN_USERNAME} --no-wait
+    --vnet-name ${VNET_NAME} --subnet ${SUBNET_NAME} --nsg ${NSG_NAME} --public-ip-address "" \
+    --generate-ssh-keys --size ${VM_SIZE} --custom-data ${CLOUD_INIT_PLC} --admin-username ${ADMIN_USERNAME} --no-wait
 }
 
 RG_NAME=isb-federation-demo
@@ -64,17 +64,17 @@ catch() {
 
 # Login and optinaly set subscription
 az login
-if [ -z "$1" ]
-  then
-    echo "No subscription provided. Using default subscription"
-  else az account set --subscription $1
+if [ -z "$1" ]; then
+  echo "No subscription provided. Using default subscription"
+else
+  az account set --subscription $1
 fi
 
 # Configure defaults
-if [ -z "$2" ]
-  then
-    echo "No region provided. Using default location [westus]"
-  else az configure --defaults location=$2
+if [ -z "$2" ]; then
+  echo "No region provided. Using default location [westus]"
+else
+  az configure --defaults location=$2
 fi
 
 # Create a resource group.
@@ -123,4 +123,3 @@ echo ${ADMIN_USERNAME}
 
 echo "YOUR SSH PRIVATE KEY FOR USING SSH THROUGH AZURE BASTION:"
 cat ~/.ssh/id_rsa
-

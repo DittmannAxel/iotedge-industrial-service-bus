@@ -29,7 +29,8 @@ namespace RabbitMQManager
         {
             var desiredProperties = moduleTwin.Properties.Desired;
 
-            if(desiredProperties[Constants.RabbitMQConfigPropertyName] != null)
+            if(desiredProperties.Contains(Constants.RabbitMQConfigPropertyName) && 
+                desiredProperties[Constants.RabbitMQConfigPropertyName] != null)
             {
                 var rabbitMQConfigAsJson = desiredProperties[Constants.RabbitMQConfigPropertyName].ToString();
                 rabbitMQConfig = JsonConvert.DeserializeObject<RabbitMQConfig>(rabbitMQConfigAsJson);

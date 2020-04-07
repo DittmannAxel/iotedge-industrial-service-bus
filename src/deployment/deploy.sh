@@ -74,6 +74,7 @@ fi
 if [ -z "$2" ]
   then
     echo "No region provided. Using default location [westus]"
+    az configure --defaults location=westus
   else az configure --defaults location=$2
 fi
 

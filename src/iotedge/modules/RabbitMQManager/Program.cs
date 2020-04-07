@@ -51,18 +51,25 @@ namespace RabbitMQManager
             await ioTHubModuleClient.OpenAsync();
             Console.WriteLine("IoT Hub module client initialized.");
 
-            var moduleTwin = await ioTHubModuleClient.GetTwinAsync();
-            await ioTHubModuleClient.SetDesiredPropertyUpdateCallbackAsync((props, ctx) =>
-            {
-                Console.WriteLine("Handling update of desired properties is not yet implemented!");
-                return Task.CompletedTask;
-            }, null);
-
             httpClient = new HttpClient();
             rabbitMqManager = new RabbitMQManager(httpClient, new RabbitMQManagerInstrumentation());
 
+            await ioTHubModuleClient.SetDesiredPropertyUpdateCallbackAsync(async (props, ctx) =>
+            {
+                Console.WriteLine("Handling desired properties update!");
+                await ApplyConfigAsync(ioTHubModuleClient);
+            }, null);
+
+            await ApplyConfigAsync(ioTHubModuleClient);
+        }
+
+        private async static Task ApplyConfigAsync(ModuleClient ioTHubModuleClient)
+        {
             try
             {
+                Console.WriteLine("Merging RabbitMQ Config is not yet implemented!");
+
+                var moduleTwin = await ioTHubModuleClient.GetTwinAsync();
                 await rabbitMqManager.ApplyConfigAsync(moduleTwin);
                 await UpdateReportedProperties(ioTHubModuleClient, OperationStatus.OK);
             }

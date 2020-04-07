@@ -1,37 +1,42 @@
-# Framework for an Industrial Service Bus with IOT Edge
+# Framework for an Industrial Service Bus with IoT Edge
 
-Welcome to our approach to design an independant framework of an industrial service bus which can run on the factory floor. With our initial design session, we had more than 30+ participants from various companies, like #Intel, #HPE, #Senseering and many others, which contributed to designs, code, use cases and prerequsite definitions.
-Since this is the first start of our community approach, we are going to continously improve this Github Repo and work on the documentation and features.
-The little architecture drawing below shows the overall architecture and some functionality, which we are going to explain in the ["docs"](docs/README.md)  section. The code for a fast implementation can be found in the ["src"](src/README.md) section.
+Welcome to our design of an independent framework for an _Industrial Service Bus_ that is able to run on the factory floor.  
+At the initial design workshop, we had more than 30+ participants from various companies, including #Intel, [#HPE](https://www.hpe.com/), #senseering and many others, which contributed to designs, code, use cases and prerequisite definitions.
 
-![isb_iot_edge](docs/img/isb_overall_arch.jpg) 
+> This GitHub repository represents an initial framework starter with an community approach.
+> As the framework evolves, continuous improvements and contributions will be added to this repository including updates to documentation and features. Please feel free to participate and contribute!
 
-### Content Description:
-#### Documentation:
+![Architecture Overview of an ISB with IoT Edge](docs/img/isb_overall_arch.jpg)
 
-Link to:
-* [use cases](docs/USECASES.md) 
-* [requriements](docs/REQUIREMENTS.md) 
-* [architecture](docs/ARCHITECTURE.md)  
+The diagram shows the overall architecture and parts of the framework functionality.
+It is explained in detail in the [documentation ("docs")](docs/README.md).  
+The code for an initial fast-start implementation can be found in the [source ("src")](src/README.md) section.
 
-### and most important: 
-* [Link to a code example with IOT Edge](src/README.md)
+## Content
 
-## What this Github Repo is not:
-* we do not want to provide an Industrial Service Bus (ISB) as a product.
+### Documentation
 
-## What this Github Repo is about:
-* provide an OpenSource framework to use any ISB and be independant from its individual feature set
-* helping others to easily implement and test a modern architecture to do the next step towards a new generation of a digitized enabled production
+- [Use Cases](docs/USECASES.md)
+- [Requirements](docs/REQUIREMENTS.md)
+- [Architecture](docs/ARCHITECTURE.md)
 
-## Next Steps:
-* Implementing [Nats.io](https://nats.io/) instead of [RabbitMQ] (https://www.rabbitmq.com/)
-* Getting more data import modules, not only OPC-UA
-* Bringing [Grafana](https://grafana.com/) with [SQl Server Edge](https://azure.microsoft.com/de-de/services/sql-database-edge/) to Azure IOT Edge
-* Creating an easy to use Visual Data Analytics module
-*  ......
+### Technical Implementation
 
+- [Code example with IoT Edge](src/README.md)
 
+## What This Repository ___is not___
 
+- It is not meant to be a product and as such no specific product called "Industrial Service Bus" (ISB) is provided.
 
+## What This Repository ___is___
 
+- It is meant and will be provided as an Open Source framework to use and implement any Industrial Service Bus (ISB). As such, it is independent from individual feature sets.
+- It is about helping others to easily implement and test a modern architecture to take the next steps towards a new generation of digitized production.
+
+## Next Steps
+
+- Implementing [NATS](https://nats.io/) in addition to [RabbitMQ](https://www.rabbitmq.com/)
+- Adding more data import modules (in addition to OPC-UA)
+- Bringing [Grafana](https://grafana.com/) with [SQL Server Edge](https://azure.microsoft.com/de-de/services/sql-database-edge/) to Azure IoT Edge
+- Creating an easy-to-use Visual Data Analytics module
+- Many more

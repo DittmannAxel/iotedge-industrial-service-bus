@@ -26,8 +26,9 @@ Then just run your container like this:
 ```none
 docker run -v C:\<path-to-the-src-folder-in-this-github-repo>:/isb -it mcr.microsoft.com/azure-cli
 ```
-
 You will have all files available under `/isb` inside the container.
+
+> Hint: if you cloned this repo in Windows and want to run it in a Linux environment, you will need to chnage the line endings in shell scripts from `CRLF` to `LF`
 
 ## Run Deployment
 

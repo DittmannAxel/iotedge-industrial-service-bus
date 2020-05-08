@@ -4,7 +4,7 @@
 
 The following resources will be created:
 
-- 3 Ubuntu VMs (2 x IoT Edge, 1 x NATS Cluster) of size _Standard_B1ms_
+- 1 Ubuntu VM (1 x IoT Edge with integrated Docker NATS Cluster) of size _Standard_B1ms_
 - 1 x VNET with two Subnets
 - 1 x Azure Bastion with public IP
 - 1 x IoT Hub of size _S1_
@@ -46,12 +46,11 @@ At the end of a successful deployment the script outputs __SSH username (current
 None of the VMs are exposed via a public IP address which is why you will need to use Azure Bastion (created as part of the deployment) to access them [as described here](https://docs.microsoft.com/bs-cyrl-ba/azure/bastion/bastion-connect-vm-ssh#privatekey).  
 After a successful deployment you will have the setup up and running shown here (blue arrows show data flows):
 
-![Architectural Diagram of the Deployment](img/deployment.png)
+![Architectural Diagram of the Deployment](img/simple.png)
 
 ### Important
 
 - Due to the lack of time the deployment script __does not__ implement robust error handling. In case you run into issues: fix those, remove the complete resource group and redeploy
-- VM hotnames are important since they are used as conventions in some connection strings like in e.g. `isb-demo-iotedge-1-pn.json` or the `cloud-init-iotedge.yml`. You would need to change those as well.
 - After a successful deployment an `.env`-file is written to disk which contains some information used by the `restart-dapr.sh` script. This is just for your convenience so you don't need to look up this information in the Azure Portal.
 - `restart-dapr.sh` is used to restart IoT Edge modules containing _Dapr_ runtime. This is needed to account for cases where e.g. _RabbitMQ_ or _Redis_ are started __after__ the _Dapr_ runtime. _Dapr_ runtime currently does not implement a retry mechanism to connect to a message broker in a pub/sub scenario. This is planned for one of the future releases. Also, it is currently not possible to specify a module start order in IoT Edge. [This functionality is planned for the upcoming 1.0.10 RC release](https://github.com/Azure/iotedge/blob/master/doc/ModuleStartupOrder.md).
 

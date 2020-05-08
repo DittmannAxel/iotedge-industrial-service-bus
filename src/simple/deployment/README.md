@@ -29,6 +29,7 @@ docker run -v C:\<path-to-the-src-folder-in-this-github-repo>:/isb -it mcr.micro
 You will have all files available under `/isb` inside the container.
 
 > Hint: if you cloned this repo in Windows and want to run it in a Linux environment, you will need to chnage the line endings in shell scripts from `CRLF` to `LF`
+
 e.g.  DOS to Linux command `tr -d '\r' < deploy.sh > deployLinux.sh`
 
 

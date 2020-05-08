@@ -63,7 +63,7 @@ Retrieve the IoT Hub owner connection string as shown here:
 ![IoT Hub Connection String Screenshot](img/iothub_connection.png)
 
 Use this connection string to connect using Azure IoT Explorer.  
-In Azure IoT Explorer select device _isb-demo-iotedge-3_ as shown here:
+In Azure IoT Explorer select device _isb-demo_ as shown here:
 
 ![Azure IoT Explorer isb-demo-iotedge-3 Device Screenshot](img/select_device_in_explorer.png)
 
@@ -71,13 +71,6 @@ Then go to _Telemetry_ -> _Start_. After some time you should see data in OPC UA
 
 ![Azure IoT Explorer Data Flow via Device Telemetry Screenshot](img/data_flow_in_explorer.png)
 
-You should see two different OPC UA NodeIds:
-
-- `\"NodeId\":\"nsu=http://microsoft.com/Opc/OpcPlc/;s=SpikeData\"` from _isb-demo-plc-1_
-- `\"NodeId\":\"nsu=http://microsoft.com/Opc/OpcPlc/;s=DipData\"` from _isb-demo-plc-2_
-
-Those PLCs might in reality be located in completely different factories in different locations.  
-Still, with ISB it is easy to consume this data without having any knowledge where it exactly comes from.
 
 ## Troubleshooting
 

@@ -30,6 +30,7 @@ Client.fromEnvironment(Transport, function (err, client) {
 
         // Act on input messages to the module.
         client.on('inputMessage', function (inputName, msg) {
+          console.log('Msg' + JSON.stringify(msg));
           pipeMessage(client, inputName, msg);
         });
       }
@@ -40,7 +41,7 @@ Client.fromEnvironment(Transport, function (err, client) {
 // This function just pipes the messages without any change.
 function pipeMessage(client, inputName, msg) {
   if (inputName === 'input1') {
-    var message = msg.getBytes().toString('utf8');
+    var message = msg.getBytes().toString('utf8');    
     if (message) {
       request({ uri: publishUrl, method: 'POST', json: message }, (error, response, body) => {
         if (error) {

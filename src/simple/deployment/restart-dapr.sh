@@ -16,8 +16,7 @@ read_var() {
 
 ISB_IOT_HUB=$(read_var ISB_IOT_HUB)
 IOT_EDGE_1=$(read_var IOT_EDGE_1)
-IOT_EDGE_2=$(read_var IOT_EDGE_2)
-IOT_EDGE_3=$(read_var IOT_EDGE_3)
+
 MAX_RETRY_COUNT=10
 
 isDeploymentSuccessful() {
@@ -57,5 +56,3 @@ restartDapr() {
 }
 
 restartDapr ${IOT_EDGE_1}
-restartDapr ${IOT_EDGE_2}
-restartDapr ${IOT_EDGE_3}

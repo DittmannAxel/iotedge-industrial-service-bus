@@ -44,7 +44,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "rdscompany/isbwriter:0.0.4-amd64",
+              "image": "rdscompany/isbwriter:0.0.6-amd64",
               "createOptions": "{\"Env\":[\"TOPIC=modbus-data\"]}"
             }
           },
@@ -94,7 +94,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "rdscompany/isbreader:0.0.6-amd64",
+              "image": "rdscompany/isbreader:0.0.7-amd64",
               "createOptions": "{\"Env\":[\"TOPIC=modbus-data\"]}"
             }
           }

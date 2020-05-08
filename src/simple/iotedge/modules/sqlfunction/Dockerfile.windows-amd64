@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:2.1 AS build-env
+WORKDIR /app
+
+COPY *.csproj ./
+RUN dotnet restore
+
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+FROM mcr.microsoft.com/azure-functions/dotnet:2.0-nanoserver-1809
+
+ENV AzureWebJobsScriptRoot=C:\\app
+
+ENV AzureFunctionsJobHost:Logging:Console:IsEnabled=true
+
+COPY --from=build-env /app/out /app

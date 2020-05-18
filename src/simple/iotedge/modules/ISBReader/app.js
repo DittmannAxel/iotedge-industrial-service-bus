@@ -12,14 +12,13 @@ const port = 3000;
 const topic = process.env.TOPIC;
 
 // Dapr publishes messages with the application/cloudevents+json content-type
-app.use(bodyParser.json({ type: 'application/json' }));
+app.use(bodyParser.json({ type: 'application/*+json' }));
 
 app.get('/dapr/subscribe', (_req, res) => {
   res.json([
     topic
   ]);
 });
-
 
 Client.fromEnvironment(Transport, function (err, client) {
   if (err) {
@@ -64,7 +63,5 @@ function handleServiceBusMessage(request, result, client) {
     });
   }
 }
-
-
 
 app.listen(port, () => console.log(`Node App listening on port ${port}!`));

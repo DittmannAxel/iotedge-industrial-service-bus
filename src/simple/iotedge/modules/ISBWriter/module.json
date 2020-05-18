@@ -4,7 +4,7 @@
     "image": {
         "repository": "rdscompany/isbwriter",
         "tag": {
-            "version": "0.0.6",
+            "version": "1.0.3",
             "platforms": {
                 "amd64": "./Dockerfile.amd64"
             }

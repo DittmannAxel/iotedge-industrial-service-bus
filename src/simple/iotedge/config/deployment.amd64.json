@@ -39,13 +39,13 @@
             }
           },
           "isbwriter": {
-            "version": "1.0",
+            "version": "2.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "rdscompany/isbwriter:0.0.6-amd64",
-              "createOptions": "{\"Env\":[\"TOPIC=modbus-data\"]}"
+              "image": "rdscompany/isbwriter:1.0.3-amd64",
+              "createOptions": "{\"Env\":[\"TOPIC=simple-data\"]}"
             }
           },
           "Modbus": {
@@ -59,7 +59,7 @@
             }
           },
           "Modbussimulator": {
-            "version": "2.0",
+            "version": "3.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
@@ -68,8 +68,18 @@
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"502/tcp\":[{\"HostPort\":\"502\"}]}}}"
             }
           },
+          "isbreader": {
+            "version": "2.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "rdscompany/isbreader:1.0.3-amd64",
+              "createOptions": "{\"Env\":[\"TOPIC=simple-data\"]}"
+            }
+          },
           "sql": {
-            "version": "1.0",
+            "version": "2.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
@@ -88,14 +98,14 @@
               "createOptions": "{}"
             }
           },
-          "isbreader": {
-            "version": "1.0",
+          "grafana": {
+            "version": "0.0.2",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "rdscompany/isbreader:0.0.7-amd64",
-              "createOptions": "{\"Env\":[\"TOPIC=modbus-data\"]}"
+              "image": "rdscompany/grafana:0.0.2-amd64",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"3000/tcp\":[{\"HostPort\":\"3000\"}]}}}"
             }
           }
         }
@@ -106,7 +116,6 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusToISBWriter": "FROM /messages/modules/Modbus/outputs/modbusOutput/* INTO BrokeredEndpoint(\"/modules/isbwriter/inputs/input1\")",
-          "ISBReaderToIoTHub": "FROM /messages/modules/isbreader/outputs/* INTO $upstream",
           "ISBReaderToSQLFunction": "FROM /messages/modules/isbreader/outputs/* INTO BrokeredEndpoint(\"/modules/sqlfunction/inputs/input1\")"
         },
         "storeAndForwardConfiguration": {
@@ -125,11 +134,11 @@
                 "Count": "2",
                 "DisplayName": "Voltage",
                 "PollingInterval": "10000",
-                "StartAddress": "400001",
+                "StartAddress": "40001",
                 "UnitId": "1"
               }
             },
-            "SlaveConnection": "10.0.0.4"
+            "SlaveConnection": "172.16.0.7"
           }
         }
       }

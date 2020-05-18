@@ -16,4 +16,4 @@ RUN tar -zxvf daprd_linux_amd64.tar.gz
 
 ENV PATH /app:$PATH
 
-CMD ["/bin/bash", "runWithDapr.sh", "isbreaderapp", "4000"]
+CMD ["/bin/bash", "runWithDapr.sh", "isbreaderapp", "3000"]

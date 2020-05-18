@@ -6,4 +6,4 @@ spec:
   type: pubsub.nats
   metadata:
   - name: natsURL
-    value: "nats://10.0.0.4:4222"
+    value: "nats://172.16.0.7:4222"

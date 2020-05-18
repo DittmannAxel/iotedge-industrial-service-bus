@@ -55,7 +55,7 @@ namespace Functions.Samples
 
                             foreach (var value in data.Values)
                             {
-                                var insertMachinePower = "INSERT INTO MeasurementsDB.dbo.PowerMeasurements VALUES ('"  + messageBody.id + "','" + messageBody.source +"','" + messageBody.type + "','" + messageBody.specversion + "','" + messageBody.datacontenttype + "','" + item.HwId +  "','" + value.Address +  "','" + value.Value +  "','" + data.SourceTimestamp.ToString() + "');";
+                                var insertMachinePower = "INSERT INTO dbo.PowerMeasurements VALUES ('"  + messageBody.id + "','" + messageBody.source +"','" + messageBody.type + "','" + messageBody.specversion + "','" + messageBody.datacontenttype + "','" + item.HwId +  "','" + value.Address +  "','" + value.Value +  "','" + data.SourceTimestamp.ToString() + "');";
                                 using (Sql.SqlCommand cmd = new Sql.SqlCommand(insertMachinePower, conn))
                                 {
                                 //Execute the command and log the # rows affected.

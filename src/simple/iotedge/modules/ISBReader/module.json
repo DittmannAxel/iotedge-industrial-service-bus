@@ -4,7 +4,7 @@
     "image": {
         "repository": "rdscompany/isbreader",
         "tag": {
-            "version": "1.0.3",
+            "version": "1.0.4",
             "platforms": {
                 "amd64": "./Dockerfile.amd64"
             }

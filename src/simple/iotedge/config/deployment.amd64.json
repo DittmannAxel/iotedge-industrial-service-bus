@@ -44,7 +44,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "rdscompany/isbwriter:1.0.3-amd64",
+              "image": "rdscompany/isbwriter:1.0.4-amd64",
               "createOptions": "{\"Env\":[\"TOPIC=simple-data\"]}"
             }
           },
@@ -74,19 +74,33 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "rdscompany/isbreader:1.0.3-amd64",
+              "image": "rdscompany/isbreader:1.0.4-amd64",
               "createOptions": "{\"Env\":[\"TOPIC=simple-data\"]}"
             }
           },
           "sql": {
-            "version": "2.0",
+            "settings": {
+              "image": "marketplace.azurecr.io/microsoftsqledge-preview/azure-sql-database-edge",
+              "createOptions": "{\"HostConfig\":{\"CapAdd\":[\"SYS_PTRACE\"],\"Binds\":[\"sqlvolume:/sqlvolume\"],\"PortBindings\":{\"1433/tcp\":[{\"HostPort\":\"1433\"}]},\"Mounts\":[{\"Type\":\"volume\",\"Source\":\"sqlvolume\",\"Target\":\"/var/opt/mssql\"}]},\"User\":\"0:0\",\"Env\":[\"MSSQL_AGENT_ENABLED=TRUE\",\"ClientTransportType=AMQP_TCP_Only\",\"MSSQL_PID=Developer\"]}"
+            },
             "type": "docker",
+            "env": {
+              "ACCEPT_EULA": {
+                "value": "Y"
+              },
+              "SA_PASSWORD": {
+                "value": "Strong!Passw0rd"
+              },
+              "MSSQL_LCID": {
+                "value": "1033"
+              },
+              "MSSQL_COLLATION": {
+                "value": "SQL_Latin1_General_CP1_CI_AS"
+              }
+            },
             "status": "running",
             "restartPolicy": "always",
-            "settings": {
-              "image": "microsoft/mssql-server-linux:2017-latest",
-              "createOptions": "{\"Env\":[\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\":{\"Mounts\":[{\"Source\":\"sqlVolume\",\"Target\":\"/var/opt/mssql\",\"Type\":\"volume\"}],\"PortBindings\":{\"1433/tcp\":[{\"HostPort\":\"1433\"}]}}}"
-            }
+            "version": "1.0"
           },
           "sqlfunction": {
             "version": "2.0",
@@ -94,7 +108,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "rdscompany/isbsqlfunction:0.0.25-amd64",
+              "image": "rdscompany/isbsqlfunction:0.0.26-amd64",
               "createOptions": "{}"
             }
           },
@@ -138,7 +152,7 @@
                 "UnitId": "1"
               }
             },
-            "SlaveConnection": "172.16.0.7"
+            "SlaveConnection": "10.0.0.4"
           }
         }
       }

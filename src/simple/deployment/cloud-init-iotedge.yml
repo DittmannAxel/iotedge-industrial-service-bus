@@ -93,7 +93,7 @@ write_files:
           command: "--cluster nats://0.0.0.0:6222 --routes=nats://nats:6222"
         nats-2:
           image: nats
-          command: "--cluster nats://0.0.0.0:6222 --routes=nats://@nats:6222"
+          command: "--cluster nats://0.0.0.0:6222 --routes=nats://nats:6222"
       networks:
         default:
           external:
@@ -107,4 +107,5 @@ write_files:
       curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
       chmod +x /usr/local/bin/docker-compose 
       docker-compose -f /usr/share/nats/nats-cluster.yml up -d
+      docker exec -it sql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Strong!Passw0rd' -Q "DROP DATABASE IF EXISTS [MeasurementsDB];CREATE DATABASE MeasurementsDB ON (NAME = MeasurementsDB, FILENAME = '/var/opt/mssql/measurementsdb.mdf');DROP TABLE MeasurementsDB.[dbo].[PowerMeasurements];CREATE TABLE MeasurementsDB.[dbo].[PowerMeasurements] ([id] NVARCHAR (50) NULL,[source] NVARCHAR (50) NULL,[type] NVARCHAR (50) NULL,[specversion] NVARCHAR (50) NULL,[contenttype] NVARCHAR (50) NULL,[hwid] NVARCHAR (50) NULL,[address] NVARCHAR (50) NULL,[value] FLOAT (53) NULL,[publishtimestamp] DATETIME NULL);"
 final_message: "The system is finally up, after $UPTIME seconds"

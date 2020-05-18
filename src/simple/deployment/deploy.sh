@@ -44,23 +44,28 @@ getRandomString() {
 ##  EDGE RUNTIME
 deployIoTEdge() {
   # Create an IoT Edge virtual machine and configure IoT Edge
+  echo "Create VM with custom data"
   az vm create --resource-group ${RG_NAME} --name $1 --image UbuntuLTS \
-    --vnet-name ${VNET_NAME} --subnet ${SUBNET_NAME} --nsg ${NSG_NAME} --public-ip-address "" \
+    --vnet-name ${VNET_NAME} --subnet ${SUBNET_NAME} --nsg ${NSG_NAME} --public-ip-address "" --private-ip-address "10.0.0.4" \
     --generate-ssh-keys --size ${VM_SIZE} --admin-username ${ADMIN_USERNAME} --custom-data ${CLOUD_INIT_IOT_EDGE}
 
   # Create IoT Edge identity in IoT Hub
+  echo "Create IoT identity in IoT Hub"
   az iot hub device-identity create -n ${ISB_IOT_HUB} -d $1 --ee
 
   # Deploy edge modules
+  echo "Edge Modules to VM"
   az iot edge deployment create -d $1 -n ${ISB_IOT_HUB} \
     --content $2 --target-condition "deviceId='$1'" --priority 10
 
   # set IoT Hub connection string
+  echo "set IoT Hub connection string"
   local connectionString=$(az iot hub device-identity show-connection-string --device-id $1 --hub-name ${ISB_IOT_HUB} -o tsv)
   az vm run-command invoke -g ${RG_NAME} -n $1 \
     --command-id RunShellScript --script "/etc/iotedge/configedge.sh '${connectionString}'"
 
   # start up nats cluster
+  echo "Start Nats Cluster"
   az vm run-command invoke -g ${RG_NAME} -n $1 \
     --command-id RunShellScript --script "/usr/share/nats/startup.sh"
 }
@@ -68,12 +73,12 @@ deployIoTEdge() {
 
 
 # VARS
-RG_NAME=rg-iotedge-industrial-service-bus
+RG_NAME=rg-iotedge-industrial-service-bus-dev
 VNET_NAME=isb-demo-vnet
 SUBNET_NAME=isb-demo-subnet
 NSG_NAME=isb-demo-nsg
 BASTION_PUBLIC_IP=isb-bastion-public-ip
-VM_SIZE=Standard_B1ms
+VM_SIZE=Standard_B2s
 IOT_EDGE_VM_NAME_PREFIX=isb-demo
 ISB_IOT_HUB=isb-demo-iot-hub
 BASTION_NAME=isb-azure-bastion
@@ -157,7 +162,7 @@ echo "ISB_IOT_HUB=${ISB_IOT_HUB}" >> .env
 echo "IOT_EDGE_1=${IOT_EDGE_VM_NAME_PREFIX}-1" >> .env
 
 # Restart Dapr modules as a workaround for Dapr not yet implementing decent retry mechanism for reconenctions to a pub/sub broker
-./restart-dapr.sh
+./restart-daprLinux.sh
 
 # Output credentials for VMs
 echo "YOUR USERNAME FOR USING SSH THROUGH AZURE BASTION:"

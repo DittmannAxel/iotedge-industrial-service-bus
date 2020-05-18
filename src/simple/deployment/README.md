@@ -4,7 +4,7 @@
 
 The following resources will be created:
 
-- 3 Ubuntu VMs (2 x IoT Edge, 1 x NATS Cluster) of size _Standard_B1ms_
+- 1 Ubuntu VMs (1 x IoT Edge, 1 x NATS Cluster) of size _Standard_B1ms_
 - 1 x VNET with two Subnets
 - 1 x Azure Bastion with public IP
 - 1 x IoT Hub of size _S1_

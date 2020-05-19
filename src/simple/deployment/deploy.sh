@@ -46,7 +46,7 @@ deployIoTEdge() {
   # Create an IoT Edge virtual machine and configure IoT Edge
   echo "Create VM with custom data"
   az vm create --resource-group ${RG_NAME} --name $1 --image UbuntuLTS \
-    --vnet-name ${VNET_NAME} --subnet ${SUBNET_NAME} --nsg ${NSG_NAME} --public-ip-address "" --private-ip-address "10.0.0.4" \
+    --vnet-name ${VNET_NAME} --subnet ${SUBNET_NAME} --nsg ${NSG_NAME} --public-ip-address ${BASTION_PUBLIC_IP} --private-ip-address "10.0.0.4" \
     --generate-ssh-keys --size ${VM_SIZE} --admin-username ${ADMIN_USERNAME} --custom-data ${CLOUD_INIT_IOT_EDGE}
 
   # Create IoT Edge identity in IoT Hub
@@ -144,25 +144,29 @@ az network public-ip create --resource-group ${RG_NAME} --name ${BASTION_PUBLIC_
   --allocation-method Static --sku Standard
 echo -e "${NC}"
 
-echo -e "${GREEN}\n\nCreate Azure Bastion... ${NC}"
-echo -e "${YELLOW}"
-# Create Azure Bastion
-az network bastion create --name ${BASTION_NAME} --public-ip-address ${BASTION_PUBLIC_IP} \
-  --resource-group ${RG_NAME} --vnet-name ${VNET_NAME}
-echo -e "${NC}"
+# echo -e "${GREEN}\n\nCreate Azure Bastion... ${NC}"
+# echo -e "${YELLOW}"
+# # Create Azure Bastion
+# az network bastion create --name ${BASTION_NAME} --public-ip-address ${BASTION_PUBLIC_IP} \
+#   --resource-group ${RG_NAME} --vnet-name ${VNET_NAME}
+# echo -e "${NC}"
 
 # Prepare IoT Edge Devices
 
 deployIoTEdge ${IOT_EDGE_VM_NAME_PREFIX}-1 ${IOT_EDGE_DEPLOYMENT}
 
-
+echo -e "${GREEN}\n\Open Port 3000 for Grafana... ${NC}"
+echo -e "${YELLOW}"
+# Create public IP for Azure Bastion
+az vm open-port --resource-group ${RG_NAME} --name ${IOT_EDGE_VM_NAME_PREFIX}-1 --port 3000
+echo -e "${NC}"
 
 # Write .env file
 echo "ISB_IOT_HUB=${ISB_IOT_HUB}" >> .env
 echo "IOT_EDGE_1=${IOT_EDGE_VM_NAME_PREFIX}-1" >> .env
 
 # Restart Dapr modules as a workaround for Dapr not yet implementing decent retry mechanism for reconenctions to a pub/sub broker
-./restart-daprLinux.sh
+# ./restart-daprLinux.sh
 
 # Output credentials for VMs
 echo "YOUR USERNAME FOR USING SSH THROUGH AZURE BASTION:"

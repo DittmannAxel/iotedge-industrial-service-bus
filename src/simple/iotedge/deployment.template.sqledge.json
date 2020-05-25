@@ -99,10 +99,24 @@
           },
           "sql": {
             "settings": {
-                "image": "microsoft/mssql-server-linux:2017-latest",
-                "createOptions": "{\"Env\":[\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\":{\"Mounts\":[{\"Target\":\"/var/opt/mssql\",\"Source\":\"sqlVolume\",\"Type\":\"volume\"}],\"PortBindings\":{\"1433/tcp\":[{\"HostPort\":\"1433\"}]}}}"
+                "image": "marketplace.azurecr.io/microsoftsqledge-preview/azure-sql-database-edge",
+                "createOptions": "{\"HostConfig\":{\"CapAdd\":[\"SYS_PTRACE\"],\"Binds\":[\"sqlvolume:/sqlvolume\"],\"PortBindings\":{\"1433/tcp\":[{\"HostPort\":\"1433\"}]},\"Mounts\":[{\"Type\":\"volume\",\"Source\":\"sqlvolume\",\"Target\":\"/var/opt/mssql\"}]},\"User\":\"0:0\",\"Env\":[\"MSSQL_AGENT_ENABLED=TRUE\",\"ClientTransportType=AMQP_TCP_Only\",\"MSSQL_PID=Developer\"]}"
             },
             "type": "docker",
+            "env": {
+                "ACCEPT_EULA": {
+                    "value": "Y"
+                },
+                "SA_PASSWORD": {
+                    "value": "Strong!Passw0rd"
+                },
+                "MSSQL_LCID": {
+                    "value": "1033"
+                },
+                "MSSQL_COLLATION": {
+                    "value": "SQL_Latin1_General_CP1_CI_AS"
+                }
+            },
             "status": "running",
             "restartPolicy": "always",
             "version": "1.0"

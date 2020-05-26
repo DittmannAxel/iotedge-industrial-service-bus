@@ -115,7 +115,7 @@ write_files:
       echo SQL container not started;
       done;
       echo SQL container started;
-      sleep 1m;
+      sleep 2m;
       docker exec -i sql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Strong!Passw0rd' -Q "CREATE DATABASE MeasurementsDB ON (NAME = MeasurementsDB, FILENAME = '/var/opt/mssql/measurementsdb.mdf');"
       sleep 5s;
       docker exec -i sql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Strong!Passw0rd' -Q "CREATE TABLE MeasurementsDB.[dbo].[PowerMeasurements] ([id] NVARCHAR (50) NULL,[source] NVARCHAR (50) NULL,[type] NVARCHAR (50) NULL,[specversion] NVARCHAR (50) NULL,[contenttype] NVARCHAR (50) NULL,[hwid] NVARCHAR (50) NULL,[address] NVARCHAR (50) NULL,[value] FLOAT (53) NULL,[publishtimestamp] DATETIME NULL);"

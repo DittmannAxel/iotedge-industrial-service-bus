@@ -92,8 +92,8 @@ IOT_EDGE_DEPLOYMENT="../iotedge/config/deployment.amd64.json"
 az extension add --name azure-iot
 az extension add --name azure-cli-iot-ext
 
-# Remove old .env file
-#rm .env
+
+rm -f .env
 
 # Login and optinaly set subscription
 az login
@@ -130,12 +130,12 @@ az network vnet create --resource-group ${RG_NAME} --name ${VNET_NAME} --address
   --subnet-name ${SUBNET_NAME} --subnet-prefix 10.0.0.0/24
 echo -e "${NC}"
 
-echo -e "${GREEN}\n\nCreate Subnet... ${NC}"
-echo -e "${YELLOW}"
-# Create AzureBastionSubnet
-az network vnet subnet create --resource-group ${RG_NAME} --vnet-name ${VNET_NAME} \
-  --name AzureBastionSubnet --address-prefix 10.0.1.0/27
-echo -e "${NC}"
+# echo -e "${GREEN}\n\nCreate Subnet... ${NC}"
+# echo -e "${YELLOW}"
+# # Create AzureBastionSubnet
+# az network vnet subnet create --resource-group ${RG_NAME} --vnet-name ${VNET_NAME} \
+#   --name AzureBastionSubnet --address-prefix 10.0.1.0/27
+# echo -e "${NC}"
 
 echo -e "${GREEN}\n\nCreate Public IP... ${NC}"
 echo -e "${YELLOW}"
@@ -166,7 +166,7 @@ echo "ISB_IOT_HUB=${ISB_IOT_HUB}" >> .env
 echo "IOT_EDGE_1=${IOT_EDGE_VM_NAME_PREFIX}-1" >> .env
 
 # Restart Dapr modules as a workaround for Dapr not yet implementing decent retry mechanism for reconenctions to a pub/sub broker
-# ./restart-daprLinux.sh
+#  ./restart-dapr.sh
 
 # Output credentials for VMs
 echo "YOUR USERNAME FOR USING SSH THROUGH AZURE BASTION:"

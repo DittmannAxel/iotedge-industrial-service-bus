@@ -20,6 +20,6 @@ namespace Industrial.Service.Bus
         public string DataContentType { get; set; }
 
         [JsonProperty("data")]
-        public MessageData Data { get; set; }
+        public string Data { get; set; }
     }
 }

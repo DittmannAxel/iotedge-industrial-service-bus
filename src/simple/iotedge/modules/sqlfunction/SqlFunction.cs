@@ -39,9 +39,11 @@ namespace Industrial.Service.Bus
 
             var message = JsonConvert.DeserializeObject<Message>(inputMessage);
 
+            var messageData = JsonConvert.DeserializeObject<MessageData>(message.Data);
+
             var measurementData = new List<string>();
 
-            foreach (var measurement in message.Data.Contents)
+            foreach (var measurement in messageData.Contents)
             {
                 foreach (var data in measurement.Data)
                 {

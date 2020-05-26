@@ -65,7 +65,7 @@
         {
           "alias": "",
           "format": "time_series",
-          "rawSql": "SELECT\n  $__timeEpoch(publishtimestamp),\n  value,\n  address as metric\nFROM\n  PowerMeasurements\nWHERE\n  $__timeFilter(publishtimestamp) AND hwid = $hwid\nORDER BY\n  publishtimestamp ASC",
+          "rawSql": "SELECT\n  $__timeEpoch(publishtimestamp),\n  value,\n  address as metric\nFROM\n  PowerMeasurements\nWHERE\n  $__timeFilter(publishtimestamp) AND hwid = $hwid\nORDER BY\npublishtimestamp ASC",
           "refId": "A"
         }
       ],

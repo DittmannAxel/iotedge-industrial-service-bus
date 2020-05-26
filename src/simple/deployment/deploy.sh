@@ -46,7 +46,7 @@ deployIoTEdge() {
   # Create an IoT Edge virtual machine and configure IoT Edge
   echo "Create VM with custom data"
   az vm create --resource-group ${RG_NAME} --name $1 --image UbuntuLTS \
-    --vnet-name ${VNET_NAME} --subnet ${SUBNET_NAME} --nsg ${NSG_NAME} --public-ip-address ${BASTION_PUBLIC_IP} --private-ip-address "10.0.0.4" \
+    --vnet-name ${VNET_NAME} --subnet ${SUBNET_NAME} --nsg ${NSG_NAME} --public-ip-address ${PUBLIC_IP} --private-ip-address "10.0.0.4" \
     --generate-ssh-keys --size ${VM_SIZE} --admin-username ${ADMIN_USERNAME} --custom-data ${CLOUD_INIT_IOT_EDGE}
 
   # Create IoT Edge identity in IoT Hub
@@ -70,18 +70,15 @@ deployIoTEdge() {
     --command-id RunShellScript --script "/usr/share/nats/startup.sh"
 }
 
-
-
 # VARS
 RG_NAME=rg-iotedge-industrial-service-bus-dev
 VNET_NAME=isb-demo-vnet
 SUBNET_NAME=isb-demo-subnet
 NSG_NAME=isb-demo-nsg
-BASTION_PUBLIC_IP=isb-bastion-public-ip
+PUBLIC_IP=isb-public-ip
 VM_SIZE=Standard_B2s
 IOT_EDGE_VM_NAME_PREFIX=isb-demo
 ISB_IOT_HUB=isb-demo-iot-hub
-BASTION_NAME=isb-azure-bastion
 CLOUD_INIT_IOT_EDGE=cloud-init-iotedge.yml
 ADMIN_USERNAME=azureuser
 IOT_EDGE_DEPLOYMENT="../iotedge/config/deployment.amd64.json"
@@ -130,26 +127,12 @@ az network vnet create --resource-group ${RG_NAME} --name ${VNET_NAME} --address
   --subnet-name ${SUBNET_NAME} --subnet-prefix 10.0.0.0/24
 echo -e "${NC}"
 
-# echo -e "${GREEN}\n\nCreate Subnet... ${NC}"
-# echo -e "${YELLOW}"
-# # Create AzureBastionSubnet
-# az network vnet subnet create --resource-group ${RG_NAME} --vnet-name ${VNET_NAME} \
-#   --name AzureBastionSubnet --address-prefix 10.0.1.0/27
-# echo -e "${NC}"
-
 echo -e "${GREEN}\n\nCreate Public IP... ${NC}"
 echo -e "${YELLOW}"
 # Create public IP for Azure Bastion
-az network public-ip create --resource-group ${RG_NAME} --name ${BASTION_PUBLIC_IP} \
+az network public-ip create --resource-group ${RG_NAME} --name ${PUBLIC_IP} \
   --allocation-method Static --sku Standard
 echo -e "${NC}"
-
-# echo -e "${GREEN}\n\nCreate Azure Bastion... ${NC}"
-# echo -e "${YELLOW}"
-# # Create Azure Bastion
-# az network bastion create --name ${BASTION_NAME} --public-ip-address ${BASTION_PUBLIC_IP} \
-#   --resource-group ${RG_NAME} --vnet-name ${VNET_NAME}
-# echo -e "${NC}"
 
 # Prepare IoT Edge Devices
 

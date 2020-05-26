@@ -2,7 +2,7 @@
 
 ## Overview
 
-
+![Components Overview](img/ComponentsOverview.png)
 
 ## Folder Structure
 

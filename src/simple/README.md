@@ -15,7 +15,7 @@
 This section refers to the folder structure under `src/simple`.
 
 - `src/simple/deployment` contains all deployment scripts
-- `src/simple/iotedge` contains a RabbitMQ implementation and tests as well as deployment manifests
+- `src/simple/iotedge` contains a Nats implementation as well as deployment manifests
 
 
 ## Implementation Details
@@ -37,16 +37,13 @@ Dapr currently supports two modes of operation:
 IoT Edge is none of those, but is closer to the _Standalone_ option.  
 Both options use the [Sidecar pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/sidecar). [This blog post](https://medium.com/@vslepakov/dapr-on-azure-iot-edge-31c7020c8cda) goes into details on how to run Dapr on IoT Edge.  
 
-Right now, [RabbitMQ](https://www.rabbitmq.com/) is used as the underlying message broker.
-Since we use Dapr we can easily switch to another implementation (e.g. [NATS.io](https://nats.io/)) by simply modifying the [Dapr component configuration](iotedge/modules/ISBWriter/components/rabbitmq.yaml) without any changes to the application itself.  
-In order to configure Federation of multiple RabbitMQ broker instances (two _Writers_, one _Reader_) the _RabbitMQManager_ module is used. It reads federation configuration from the IoT Edge Module Twin and applies it to the target broker instance at runtime. Unit tests for this module can be found in the `src/iotedge/tests` directory.
 
-There are two deployment __templates__ for _Reader_ and _Writer_ roles respectively:
+There are two deployment __templates__ 
 
-- `deployment.isbwriter.template.json`
-- `deployment.isbreader.template.json`
+- `deployment.template.json`
+- `deployment.template.sqledge.json`
 
-They define IoT Edge modules for each role.
+SQL Edge is in preview and you need to subscribe to Early Adopter program.
 
 > Also, the generated deployment __manifests__ under `src/simple/iotedge/config` are part of this repository, even though normally one would not check them in.
 This is done on purpose to get you up and running with as little effort as possible.

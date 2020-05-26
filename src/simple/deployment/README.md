@@ -4,12 +4,15 @@
 
 The following resources will be created:
 
-- 1 Ubuntu VMs (1 x IoT Edge, 1 x NATS Cluster) of size _Standard_B1ms_
-- 1 x VNET with two Subnets
+- 1 Ubuntu VMs of size _Standard_B1ms_
+  - 1 x IoT Edge
+  - 1 x NATS Cluster (Docker-Images)
+- 1 x Virtual Network (VNET)
+- 1 x Network security group (NSG)
 - 1 x Public IP
 - 1 x IoT Hub of size _S1_
 
-[Approximate Cost Estimate](https://azure.com/e/fb7a1c2c06e44177831868871bedd335)
+[Approximate Cost Estimate](https://azure.com/e/baea940d92774a99a6a1e9889788a606)
 
 ## Prerequisites
 
@@ -42,37 +45,24 @@ Clone this repo, navigate to the _deployment_ directory and execute `./deploy.sh
 > If not specified _West US_ (`westus`) is used (other examples: `eastus`, `westeurope`).
 
 It takes around 25 minutes to deploy and initialize everything.
-At the end of a successful deployment the script outputs __SSH username (currently _azureuser_) and the SSH private key__ that you can use to connect to your VMs via SSH.
-None of the VMs are exposed via a public IP address which is why you will need to use Azure Bastion (created as part of the deployment) to access them [as described here](https://docs.microsoft.com/bs-cyrl-ba/azure/bastion/bastion-connect-vm-ssh#privatekey).  
-After a successful deployment you will have the setup up and running shown here (blue arrows show data flows):
+At the end of a successful deployment the script outputs __SSH username (currently _azureuser_) and the SSH private key__ that you can use to connect to your virtual machine with the public IP address via SSH.
+In case the deployment was successful, you will have the following setup up (blue arrows show data flows):
 
 ![Architectural Diagram of the Deployment](img/deployment_simple.png)
 
 ### Important
 
 - Due to the lack of time the deployment script __does not__ implement robust error handling. In case you run into issues: fix those, remove the complete resource group and redeploy
-- VM hotnames are important since they are used as conventions in some connection strings like in e.g. `isb-demo-iotedge-1-pn.json` or the `cloud-init-iotedge.yml`. You would need to change those as well.
+- VM hostname is important since it is convention in some connection strings like in e.g. `cloud-init-iotedge.yml`. You should change this as well.
 - After a successful deployment an `.env`-file is written to disk which contains some information used by the `restart-dapr.sh` script. This is just for your convenience so you don't need to look up this information in the Azure Portal.
-- `restart-dapr.sh` is used to restart IoT Edge modules containing _Dapr_ runtime. This is needed to account for cases where e.g. _RabbitMQ_ or _Redis_ are started __after__ the _Dapr_ runtime. _Dapr_ runtime currently does not implement a retry mechanism to connect to a message broker in a pub/sub scenario. This is planned for one of the future releases. Also, it is currently not possible to specify a module start order in IoT Edge. [This functionality is planned for the upcoming 1.0.10 RC release](https://github.com/Azure/iotedge/blob/master/doc/ModuleStartupOrder.md).
 
 ## Validating Successful Deployment
 
-Download and install [Azure IoT Explorer](https://github.com/Azure/azure-iot-explorer) from [here](https://github.com/Azure/azure-iot-explorer/releases).  
-Retrieve the IoT Hub owner connection string as shown here:
-
-![IoT Hub Connection String Screenshot](img/iothub_connection.png)
-
-Use this connection string to connect using Azure IoT Explorer.  
-In Azure IoT Explorer select device _isb-demo-1_ as shown here:
-
-![Azure IoT Explorer isb-demo-iotedge-3 Device Screenshot](img/select_device_in_explorer_simple.png)
-
-Then go to _Telemetry_ -> _Start_. After some time you should see data in Modbus Pub Sub JSON format:
-
+Grafana
 
 ## Troubleshooting
 
-- You can connect to each VM using Azure Bastion using the provided credentials
+- You can connect to your VM with public IP and the provided credentials
   - You can read IoT Edge logs using `iotedge logs <module_name>`
   - You can request logs upload to a storage account using this [direct method on edgeAgent](https://github.com/Azure/iotedge/blob/master/doc/built-in-logs-pull.md)
 - In case you don't see the data flowing after a successful deployment try to re-run `restart-dapr.sh`

@@ -2,12 +2,10 @@
 
 > ## Disclaimer
 >
-> For the purpose of demonstration we use the default username/password for RabbitMQ running as container on IoT Edge.
-> Also, the actual broker configuration is part of this repository.
+> To make this example as simple as possible the automatically created environment, especially __the deployed VM is accessible from the Internet__,  please take care and secure the provided credentials.
 >
-> The automatically created environment is a sandbox meaning that __all VM instances are _NOT_ accessible from the Internet__ and only private IP addresses are used.
->
-> __You should _never_ use default credentials in production and/or check in your credentials into Git repositories!__  
+> __You should _never_ use default credentials in production and/or check in your credentials into Git repositories!__
+>  
 > Please consider using [Azure KeyVault](https://docs.microsoft.com/en-us/azure/key-vault/basic-concepts) for secret management and using a decent CI/CD pipeline to roll out your changes in a secure way.
 
 ## Folder Structure
@@ -15,15 +13,15 @@
 This section refers to the folder structure under `src/simple`.
 
 - `src/simple/deployment` contains all deployment scripts
-- `src/simple/iotedge` contains a Nats implementation as well as deployment manifests
-
+- `src/simple/iotedge` contains a NATS implementation as well as deployment manifests
 
 ## Implementation Details
 
 This demo implementation is based on [Azure IoT Edge](https://docs.microsoft.com/en-us/azure/iot-edge/about-iot-edge) and revolves around the concept of Readers and Writers.  
 In fact these roles are represented by IoT Edge modules, the `ISBWriter` and `ISBReader` respectively.  
-The _Writer_ is responsible for reading data from a simulated PLC via OPC UA and __writing__ this data into the ISB using [Dapr](https://dapr.io/) [PubSub](https://github.com/dapr/samples/tree/master/4.pub-sub).  
-The _Reader_ on the other hand is responsible for __reading__ data from the ISB, again using Dapr PubSub, and forwarding it to IoT Hub.
+The _Writer_ is responsible for reading data from a simulated Modbus Device and __writing__ this data into the ISB using [Dapr](https://dapr.io/) [PubSub](https://github.com/dapr/samples/tree/master/4.pub-sub).  
+The _Reader_ on the other hand is responsible for __reading__ data from the ISB, again using Dapr PubSub and forwarding this data to a local SQL Database.
+We use [Grafana](https://grafana.com/) to visualize the incoming data stored in the database.
 
 The following diagram shows the interaction between different IoT Edge modules and Dapr. In the demo setup `ISBReader` and `ISBWriter` modules are deployed to different IoT Edge nodes for the sake of demonstration (see [deployment diagram](deployment/img/deployment.PNG)).
 

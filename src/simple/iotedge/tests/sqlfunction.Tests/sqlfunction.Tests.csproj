@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\sqlfunction\SqlFunction.csproj" />
+    <ProjectReference Include="..\..\modules\sqlfunction\SqlFunction.csproj" />
   </ItemGroup>
 
   <ItemGroup>

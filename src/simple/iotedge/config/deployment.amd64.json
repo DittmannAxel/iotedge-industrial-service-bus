@@ -94,7 +94,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.sqlfunction.sqlfunction}",
+              "image": "rdscompany/isbsqlfunction:0.0.29-amd64",
               "createOptions": "{}"
             }
           },

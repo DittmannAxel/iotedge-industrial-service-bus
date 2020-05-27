@@ -25,7 +25,7 @@ In fact these roles are represented by IoT Edge modules, the `ISBWriter` and `IS
 The _Writer_ is responsible for reading data from a simulated PLC via OPC UA and __writing__ this data into the ISB using [Dapr](https://dapr.io/) [PubSub](https://github.com/dapr/samples/tree/master/4.pub-sub).  
 The _Reader_ on the other hand is responsible for __reading__ data from the ISB, again using Dapr PubSub, and forwarding it to IoT Hub.
 
-The following diagram shows the interaction between different IoT Edge modules and Dapr. In the demo setup `ISBReader` and `ISBWriter` modules are deployed to different IoT Edge nodes for the sake of demonstration (see [deployment diagram](deployment/img/deployment_diagram.PNG)).
+The following diagram shows the interaction between different IoT Edge modules and Dapr. In the demo setup `ISBReader` and `ISBWriter` modules are deployed to different IoT Edge nodes for the sake of demonstration (see [deployment diagram](deployment/img/deployment.png)).
 
 ![ISB Implementation with IoT Edge](img/isb_iotedge1.png)
 

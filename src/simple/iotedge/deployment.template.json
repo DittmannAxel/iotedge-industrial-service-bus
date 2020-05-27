@@ -8,7 +8,7 @@
           "type": "docker",
           "settings": {
             "minDockerVersion": "v1.25",
-            "loggingOptions": ""           
+            "loggingOptions": ""
           }
         },
         "systemModules": {
@@ -70,8 +70,8 @@
             "restartPolicy": "always",
             "settings": {
               "image": "rdscompany/modbussimulator:2.0",
-              "createOptions": {                
-                "HostConfig": {                 
+              "createOptions": {
+                "HostConfig": {
                   "PortBindings": {
                     "502/tcp": [
                       {
@@ -99,14 +99,14 @@
           },
           "sql": {
             "settings": {
-                "image": "microsoft/mssql-server-linux:2017-latest",
-                "createOptions": "{\"Env\":[\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\":{\"Mounts\":[{\"Target\":\"/var/opt/mssql\",\"Source\":\"sqlVolume\",\"Type\":\"volume\"}],\"PortBindings\":{\"1433/tcp\":[{\"HostPort\":\"1433\"}]}}}"
+              "image": "microsoft/mssql-server-linux:2017-latest",
+              "createOptions": "{\"Env\":[\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\":{\"Mounts\":[{\"Target\":\"/var/opt/mssql\",\"Source\":\"sqlVolume\",\"Type\":\"volume\"}],\"PortBindings\":{\"1433/tcp\":[{\"HostPort\":\"1433\"}]}}}"
             },
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "version": "1.0"
-        },
+          },
           "sqlfunction": {
             "version": "2.0",
             "type": "docker",
@@ -125,7 +125,7 @@
             "settings": {
               "image": "${MODULES.grafana}",
               "createOptions": {
-                "HostConfig": {                 
+                "HostConfig": {
                   "PortBindings": {
                     "3000/tcp": [
                       {
@@ -134,9 +134,9 @@
                     ]
                   }
                 }
-              }              
+              }
             }
-          }                   
+          }
         }
       }
     },
@@ -144,8 +144,8 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
-          "modbusToISBWriter": "FROM /messages/modules/Modbus/outputs/modbusOutput/* INTO BrokeredEndpoint(\"/modules/isbwriter/inputs/input1\")",          
-          "ISBReaderToSQLFunction": "FROM /messages/modules/isbreader/outputs/* INTO BrokeredEndpoint(\"/modules/sqlfunction/inputs/input1\")"   
+          "modbusToISBWriter": "FROM /messages/modules/Modbus/outputs/modbusOutput/* INTO BrokeredEndpoint(\"/modules/isbwriter/inputs/input1\")",
+          "ISBReaderToSQLFunction": "FROM /messages/modules/isbreader/outputs/* INTO BrokeredEndpoint(\"/modules/sqlfunction/inputs/input1\")"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

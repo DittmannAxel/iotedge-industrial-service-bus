@@ -129,7 +129,7 @@ echo -e "${NC}"
 
 echo -e "${GREEN}\n\nCreate Public IP... ${NC}"
 echo -e "${YELLOW}"
-# Create public IP for Azure Bastion
+# Create public IP
 az network public-ip create --resource-group ${RG_NAME} --name ${PUBLIC_IP} \
   --allocation-method Static --sku Standard
 echo -e "${NC}"
@@ -140,7 +140,7 @@ deployIoTEdge ${IOT_EDGE_VM_NAME_PREFIX}-1 ${IOT_EDGE_DEPLOYMENT}
 
 echo -e "${GREEN}\n\Open Port 3000 for Grafana... ${NC}"
 echo -e "${YELLOW}"
-# Create public IP for Azure Bastion
+# Create public IP
 az vm open-port --resource-group ${RG_NAME} --name ${IOT_EDGE_VM_NAME_PREFIX}-1 --port 3000
 echo -e "${NC}"
 
@@ -152,8 +152,8 @@ echo "IOT_EDGE_1=${IOT_EDGE_VM_NAME_PREFIX}-1" >> .env
 #  ./restart-dapr.sh
 
 # Output credentials for VMs
-echo "YOUR USERNAME FOR USING SSH THROUGH AZURE BASTION:"
+echo "YOUR USERNAME FOR USING SSH:"
 echo ${ADMIN_USERNAME}
 
-echo "YOUR SSH PRIVATE KEY FOR USING SSH THROUGH AZURE BASTION:"
+echo "YOUR SSH PRIVATE KEY FOR USING SSH:"
 cat ~/.ssh/id_rsa

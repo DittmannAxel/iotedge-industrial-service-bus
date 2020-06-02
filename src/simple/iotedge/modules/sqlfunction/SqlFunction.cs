@@ -27,7 +27,7 @@ namespace Industrial.Service.Bus
 
         public static Message Parse(string input)
         {
-            input = input.Replace("\"{", "{").Replace("\'{", "{").Replace("}\"", "}").Replace("}\'", "}");
+            input = input.Replace("\'{", "{").Replace("}\'", "}");
 
             return JsonConvert.DeserializeObject<Message>(input);
         }

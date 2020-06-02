@@ -1,31 +1,33 @@
-using System;
 using Xunit;
 using Industrial.Service.Bus;
-using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Text;
+using System.Linq;
 
 namespace sqlfunction.Tests
 {
     public class SqlFunctionTest
     {
-        private static readonly IConfiguration _config;
+        private static readonly string _input;
 
         static SqlFunctionTest()
         {
-            _config = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
-               .AddJsonFile("appsettings.json", true, true)
-               .Build();
+            _input = Encoding.UTF8.GetString(File.ReadAllBytes("testInput.txt"));
         }
 
         [Fact]
         public void ParseMessageTest()
         {
-            var input = _config["Message"];
+            var message = SqlFunction.Parse(_input);
 
-            var message = SqlFunction.Parse(input);
+            var actualValues = message.Data.Contents.SelectMany(x => x.Data).SelectMany(y => y.Values).Select(m => m.Value);
 
-            Assert.NotNull(message);
+            var expectedValues = new[] { "57413", "1781" };
+
+            Assert.Collection(
+                actualValues,
+                actualItem1 => Assert.Equal(expectedValues[0], actualItem1),
+                actualItem2 => Assert.Equal(expectedValues[1], actualItem2));
         }
     }
 }

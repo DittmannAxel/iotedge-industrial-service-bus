@@ -25,11 +25,14 @@ namespace Industrial.Service.Bus
                 .Build();
         }
 
-        public static Message Parse(string input)
+        public static Message ParseMessage(string input)
         {
-            input = input.Replace("\"\'{", "{").Replace("}\'\"", "}");
-
             return JsonConvert.DeserializeObject<Message>(input);
+        }
+
+        public static MessageData ParseData(string data)
+        {
+            return JsonConvert.DeserializeObject<MessageData>(data);
         }
 
         [FunctionName("SqlFunction")]
@@ -46,11 +49,13 @@ namespace Industrial.Service.Bus
 
             logger.LogInformation($"Received message: {inputMessage}");
 
-            var message = Parse(inputMessage);
+            var message = ParseMessage(inputMessage);
+
+            var messageData = ParseData(message.Data);
 
             var measurementData = new List<string>();
 
-            foreach (var measurement in message.Data.Contents)
+            foreach (var measurement in messageData.Contents)
             {
                 foreach (var data in measurement.Data)
                 {

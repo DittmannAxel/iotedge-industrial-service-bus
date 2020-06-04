@@ -18,11 +18,13 @@ namespace sqlfunction.Tests
         [Fact]
         public void ParseMessageTest()
         {
-            var message = SqlFunction.Parse(_input);
+            var message = SqlFunction.ParseMessage(_input);
 
-            var actualValues = message.Data.Contents.SelectMany(x => x.Data).SelectMany(y => y.Values).Select(m => m.Value);
+            var messageData = SqlFunction.ParseData(message.Data);
 
-            var expectedValues = new[] { "57413", "1781" };
+            var actualValues = messageData.Contents.SelectMany(x => x.Data).SelectMany(y => y.Values).Select(m => m.Value);
+
+            var expectedValues = new[] { "30511", "51071" };
 
             Assert.Collection(
                 actualValues,

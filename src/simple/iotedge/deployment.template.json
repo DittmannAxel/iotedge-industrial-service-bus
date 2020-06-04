@@ -1,0 +1,176 @@
+{
+  "$schema-template": "2.0.0",
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": ""
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "type": "docker",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.0.9",
+              "createOptions": {}
+            }
+          },
+          "edgeHub": {
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.0.9"
+            }
+          }
+        },
+        "modules": {
+          "redis": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "redis",
+              "createOptions": {}
+            }
+          },
+          "isbwriter": {
+            "version": "2.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.ISBWriter}",
+              "createOptions": {
+                "Env": [
+                  "TOPIC=simple-data"
+                ]
+              }
+            }
+          },
+          "Modbus": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge/modbus:1.0",
+              "createOptions": {}
+            }
+          },
+          "Modbussimulator": {
+            "version": "3.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "rdscompany/modbussimulator:2.0",
+              "createOptions": {
+                "HostConfig": {
+                  "PortBindings": {
+                    "502/tcp": [
+                      {
+                        "HostPort": "502"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "isbreader": {
+            "version": "2.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.ISBReader}",
+              "createOptions": {
+                "Env": [
+                  "TOPIC=simple-data"
+                ]
+              }
+            }
+          },
+          "sql": {
+            "settings": {
+              "image": "microsoft/mssql-server-linux:2017-latest",
+              "createOptions": "{\"Env\":[\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\":{\"Mounts\":[{\"Target\":\"/var/opt/mssql\",\"Source\":\"sqlVolume\",\"Type\":\"volume\"}],\"PortBindings\":{\"1433/tcp\":[{\"HostPort\":\"1433\"}]}}}"
+            },
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "version": "1.0"
+          },
+          "sqlfunction": {
+            "version": "2.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.sqlfunction}",
+              "createOptions": {}
+            }
+          },
+          "grafana": {
+            "version": "0.0.2",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.grafana}",
+              "createOptions": {
+                "HostConfig": {
+                  "PortBindings": {
+                    "3000/tcp": [
+                      {
+                        "HostPort": "3000"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "routes": {
+          "modbusToISBWriter": "FROM /messages/modules/Modbus/outputs/modbusOutput/* INTO BrokeredEndpoint(\"/modules/isbwriter/inputs/input1\")",
+          "ISBReaderToSQLFunction": "FROM /messages/modules/isbreader/outputs/* INTO BrokeredEndpoint(\"/modules/sqlfunction/inputs/input1\")"
+        },
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    },
+    "Modbus": {
+      "properties.desired": {
+        "PublishInterval": 10000,
+        "SlaveConfigs": {
+          "Slave01": {
+            "HwId": "PowerMeter-0a:01:01:01:01:01",
+            "Operations": {
+              "Op01": {
+                "Count": "2",
+                "DisplayName": "Voltage",
+                "PollingInterval": "10000",
+                "StartAddress": "40001",
+                "UnitId": "1"
+              }
+            },
+            "SlaveConnection": "10.0.0.4"
+          }
+        }
+      }
+    }
+  }
+}

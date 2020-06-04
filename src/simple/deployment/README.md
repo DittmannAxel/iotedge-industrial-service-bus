@@ -60,6 +60,15 @@ In case the deployment was successful, you will have the following setup up (blu
 
 Grafana
 
+Review in Azure Portal the assigend public IP of the VM. Use this IP and port 3000 to access the Grafana dashboard. http://"publicIP":3000
+
+Use the default credentials (user: admin, pass: admin) to sign in. In the dashboard manage section you find a configured dashboard named "Voltages".
+
+![Grafana dashboard](./img/grafana.png)
+
+
+
+
 ## Troubleshooting
 
 - You can connect to your VM with public IP and the provided credentials

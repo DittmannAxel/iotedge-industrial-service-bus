@@ -17,7 +17,7 @@ This demo implementation is based on [Azure IoT Edge](https://docs.microsoft.com
 In fact these roles are represented by IoT Edge modules, the `ISBWriter` and `ISBReader` respectively.  
 The _Writer_ is responsible for reading data from a simulated Modbus Device and __writing__ this data into the ISB using [Dapr](https://dapr.io/) [PubSub](https://github.com/dapr/samples/tree/master/4.pub-sub).  
 The _Reader_ on the other hand is responsible for __reading__ data from the ISB, again using Dapr PubSub and forwarding this data to a local SQL Database.
-We use [Grafana](https://grafana.com/) to visualize the incoming data stored in the database.
+We use [Grafana](https://grafana.com/) to visualize the incoming data stored in a database.
 
 The following diagram shows the interaction between different IoT Edge modules and Dapr. In the demo setup `ISBReader` and `ISBWriter` modules are deployed to the same IoT Edge to make this example as simple as possible (see [deployment diagram](deployment/img/deployment_simple.png)).
 

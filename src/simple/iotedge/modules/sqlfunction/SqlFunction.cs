@@ -15,15 +15,7 @@ namespace Industrial.Service.Bus
 {
     public static class SqlFunction
     {
-        private static readonly IConfiguration _config;
-
-        static SqlFunction()
-        {
-            _config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true)
-                .Build();
-        }
+        private static readonly string DatabaseConnection = "Data Source=tcp:sql;Initial Catalog=MeasurementsDB;User ID=SA;Password=Strong!Passw0rd;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;"
 
         public static Message ParseMessage(string input)
         {
@@ -68,7 +60,7 @@ namespace Industrial.Service.Bus
 
             var insertStatement = $"INSERT INTO dbo.PowerMeasurements VALUES {String.Join(",", measurementData)};";
 
-            using (var connection = new SqlConnection(_config["DatabaseConnection"]))
+            using (var connection = new SqlConnection(DatabaseConnection))
             {
                 connection.Open();
 

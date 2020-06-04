@@ -4,7 +4,7 @@
     type: 'com.dapr.event.sent',
     specversion: '0.3',
     datacontenttype: 'application/json',
-    data: '{
+    data: "'{
         "PublishTimestamp": "2020-05-26 19:27:42",
         "Content": [
             {
@@ -29,5 +29,5 @@
                 ]
             }
         ]
-    }'
+    }'"
 }

@@ -15,7 +15,7 @@ namespace Industrial.Service.Bus
 {
     public static class SqlFunction
     {
-        private static readonly string DatabaseConnection = "Data Source=tcp:sql;Initial Catalog=MeasurementsDB;User ID=SA;Password=Strong!Passw0rd;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;"
+        private static readonly string DatabaseConnection = "Data Source=tcp:sql;Initial Catalog=MeasurementsDB;User ID=SA;Password=Strong!Passw0rd;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;";
 
         public static Message ParseMessage(string input)
         {

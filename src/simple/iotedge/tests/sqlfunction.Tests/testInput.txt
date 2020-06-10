@@ -1,0 +1,36 @@
+{
+    "id":"2ec3690e-2259-4366-a30a-f6704a4f116d",
+    "source":"isbwriterapp",
+    "type":"com.dapr.event.sent",
+    "specversion":"0.3",
+    "datacontenttype":"application/json",
+    "data":"
+    {
+        \"PublishTimestamp\":\"2020-06-04 10:40:58\",
+        \"Content\":
+        [
+            {\"HwId\":\"PowerMeter-0a:01:01:01:01:01\",
+            \"Data\":
+            [
+                {
+                    \"CorrelationId\":\"DefaultCorrelationId\",
+                    \"SourceTimestamp\":\"2020-06-04 10:40:48\",
+                    \"Values\":
+                    [   
+                        {
+                            \"DisplayName\":\"Voltage\",
+                            \"Address\":\"40001\",
+                            \"Value\":\"30511\"
+                        },
+                        {
+                            \"DisplayName\":\"Voltage\",
+                            \"Address\":\"40002\",
+                            \"Value\":\"51071\"
+                        }
+                    ]
+                }
+            ]
+        }
+        ]
+    }"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "isbreader",
+    "version": "0.0.1",
+    "dependencies": {
+        "azure-iot-device": "^1.7.0",
+        "azure-iot-device-mqtt": "^1.7.0",
+        "body-parser": "^1.18.3",
+        "express": "^4.16.4",
+        "isomorphic-fetch": "^2.2.1"
+    }
+}

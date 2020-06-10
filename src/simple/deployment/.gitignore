@@ -1,0 +1,4 @@
+.env
+.deployLinux.sh
+.restart-daprLinux.sh
+*.ppk

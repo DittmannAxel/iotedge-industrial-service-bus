@@ -1,0 +1,9 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component 
+metadata:
+  name: messagebus-nats
+spec:
+  type: pubsub.nats
+  metadata:
+  - name: natsURL
+    value: "nats://10.0.0.4:4222"

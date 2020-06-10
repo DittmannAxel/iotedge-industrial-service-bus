@@ -1,0 +1,24 @@
+# config file version
+apiVersion: 1
+
+# list of datasources to insert/update depending
+# what's available in the database
+datasources:
+  # <string, required> name of the datasource. Required
+ - name: Microsoft SQL Server
+   # <string, required> datasource type. Required
+   type: mssql 
+   # <string, required> access mode. proxy or direct (Server or Browser in the UI). Required
+   access: proxy
+   # <string> url
+   url: sql:1433
+   # <string> database name, if used
+   database: MeasurementsDB 
+   # <bool> mark as default datasource. Max one per org
+   isDefault: true
+   # <bool> allow users to edit datasources from the UI.
+   editable: false
+   # creds
+   user: SA 
+   secureJsonData: 
+     password: Strong!Passw0rd 

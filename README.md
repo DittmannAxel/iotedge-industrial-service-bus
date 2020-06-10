@@ -23,6 +23,7 @@ The code for an initial fast-start implementation can be found in the [source ("
 ### Technical Implementation
 
 - [Code example with IoT Edge](src/README.md)
+- [Complete example on a single virtual machine](src/simple/README.md)
 
 ## What This Repository ___is not___
 
